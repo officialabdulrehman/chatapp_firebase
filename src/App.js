@@ -26,7 +26,7 @@ function App() {
   const [user] = useAuthState(auth)
   return (
     <div className="App">
-      <header></header>
+      <header><SignOut /></header>
       <section>{user ? <ChatRoom /> : <SignIn />}</section>
     </div>
   );
@@ -38,8 +38,13 @@ function SignIn() {
     auth.signInWithPopup(provider);
   }
   return (
-    <button onClick={signInWithGoogle}>Sign in with google</button>
-  )
+    <>
+      <button onClick={signInWithGoogle}>Sign in with google</button>
+      <p>
+        Do not violate the community guidelines or you will be banned for life!
+      </p>
+    </>
+  );
 }
 
 function SignOut() {
@@ -82,7 +87,7 @@ function ChatRoom() {
       </main>
       <form onSubmit={sendMessage}>
         <input value={formValue} onChange={(e) => setFormValue(e.target.value)}/>
-        <button type='submit'>Send</button>
+        <button type='submit' disabled={!formValue}>🕊️</button>
       </form>
     </>
   );
@@ -94,7 +99,7 @@ function ChatMessage(props){
   const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received'
   return (
     <div className={`message ${messageClass}`}>
-      <img src={photoURL}/>
+      <img src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'}/>
       <p>{text}</p>
     </div>
   )
